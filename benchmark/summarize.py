@@ -69,7 +69,7 @@ def summarise(impl, command):
         "upstream_tests": {
             "command": "cd <upstream clone> && PATH=<python-shim>:$PATH PYTHONPATH=%s/src "
                        "/tmp/venv-pytest/bin/python -m pytest tests -q -o addopts=''" % REPO,
-            "result": "315 passed in 4.14s",
+            "result": "315 passed in 4.02s",
             "passed": 315,
             "failed": 0,
             "note": "upstream test_cache_memoize_async_runtime_error_regression shells out to 'python'; a python->python3 shim was prepended to PATH",

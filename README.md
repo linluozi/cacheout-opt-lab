@@ -38,8 +38,10 @@ if expires_at is _NO_EXPIRY:
 return expires_at <= expires_on
 ```
 
-`tests/test_diff.py` also measures this directly with `sys.monitoring`: 500 plain hits raise 1000
-`KeyError`s in the baseline (500 `set` + 500 `get`) and **0** after the patch.
+`tests/test_diff.py` also measures this directly with `sys.monitoring`: in a 500-hit `get()` phase
+the baseline raises 500 `KeyError`s and the patch raises **0**. (`set()` separately raises 500 on
+both sides through `_delete()` on first insertion — a different hotspot, deliberately not touched
+by this one-change patch.)
 
 ## Gates (each with its command)
 
