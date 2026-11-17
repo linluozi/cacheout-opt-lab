@@ -85,7 +85,7 @@ for every timed sample. `tests/test_diff.py` builds the same baseline.
 这里首次指出并度量了 cacheout 相反方向的缺陷：`expired()` 在**无 TTL 的命中路径**上每次命中都
 raise+catch 一个 KeyError（`sys.monitoring` 实测 500 次命中触发 500 次 raise；另有 500 次来自
 set 的 `_delete`，本补丁未动），去掉后
-在真实文档语料上 1.65–1.79x、1300 组逐字节差分 0 差异。与既有条目相比，新在被测对象是命中路径、
+在真实文档语料上 1.71–1.85x、1300 组逐字节差分 0 差异。与既有条目相比，新在被测对象是命中路径、
 证据是 raise 计数而不是估算，且同时给出 miss/写路径不受影响的语义差分。
 
 ## License
