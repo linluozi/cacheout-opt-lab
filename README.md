@@ -13,15 +13,11 @@ sha256 in `benchmark/*.json`), 5 timed samples per scale after 3 warmups:
 
 | scale | lookups | baseline median (p25/p75) | optimized median (p25/p75) | speedup | hit rate |
 |---|---|---|---|---|---|
-| small | 20,000 | 19.06 ms (19.06/21.04) | 11.54 ms (11.54/11.57) | **1.65x** | 97.4% |
-| medium | 100,000 | 93.71 ms (92.04/97.58) | 52.34 ms (52.18/52.66) | **1.79x** | 99.5% |
-| large | 500,000 | 451.20 ms (451.12/451.80) | 257.20 ms (256.57/261.34) | **1.75x** | 99.9% |
+| small | 20,000 | 20.03 ms (20.01/20.18) | 11.73 ms (11.70/11.77) | **1.71x** | 97.4% |
+| medium | 100,000 | 97.06 ms (96.95/97.36) | 52.42 ms (52.16/54.17) | **1.85x** | 99.5% |
+| large | 500,000 | 470.53 ms (468.34/473.72) | 274.86 ms (266.56/276.16) | **1.71x** | 99.9% |
 
-Median speedup across the three scales: **1.754x**. The medium *baseline* has one 127.6 ms sample
-against 90.0–97.6 ms for the other four (relative stdev 13.9%), so the median is reported and the
-quartiles are shown; the same-scale optimized samples are stable (9.2% stdev). The large scale is
-stable (0.6% baseline, 3.0% optimized). Timing is `time.perf_counter()`; raw samples are kept in
-`benchmark/raw/`. No RNG is used — token order is deterministic from the corpus.
+Median speedup across the three scales: **1.712x**. Relative stdev of the five timed samples: small 0.5% / 1.2%, medium 0.5% / 3.1%, large 0.5% / 2.7% (baseline / optimized). All samples are in `benchmark/raw/`; medians and quartiles are reported, and any sample above 10% stdev is disclosed here rather than smoothed away. Timing is `time.perf_counter()`; no RNG is used, token order is deterministic from the corpus.
 
 ## Why the hit path was slow
 
@@ -49,10 +45,10 @@ by this one-change patch.)
 |---|---|---|
 | G1 upstream tests | **315 passed**, 0 failed (4.02 s) | `cd <upstream clone> && PATH=<python-shim>:$PATH PYTHONPATH=$PWD/src /tmp/venv-pytest/bin/python -m pytest tests -q -o addopts=""` |
 | G2 differential | **1300 unique scenarios, 0 differences** (sha256-deduplicated specs) | `python3 -m unittest discover -s tests -v` |
-| G3 median speedup | **1.754x** (1.65/1.79/1.75) | `python3 benchmark/summarize.py` after bench runs |
-| G3b real corpus | **1.75x at 500k lookups** on upstream documentation prose | `python3 benchmark/bench.py --impl opt --scale large` vs `--impl base` |
-| G4 large scale | **1.75x** (≥0.95x) | same as G3b |
-| G5 peak RSS | 28,148 KB vs 28,672 KB baseline (**0.98x**) | `/usr/bin/time -v python3 benchmark/bench.py --impl base --scale large` (and `opt`) |
+| G3 median speedup | **1.712x** (1.708/1.852/1.712) | `python3 benchmark/summarize.py` after bench runs |
+| G3b real corpus | **1.712x at 500k lookups** on upstream documentation prose | `python3 benchmark/bench.py --impl opt --scale large` vs `--impl base` |
+| G4 large scale | **1.712x** (≥0.95x) | same as G3b |
+| G5 peak RSS | 28,028 KB vs 28,672 KB baseline (**0.98x**, `maxrss_kb` in `benchmark/*.json`) | `/usr/bin/time -v python3 benchmark/bench.py --impl base --scale large` (and `opt`) |
 
 G1 note: upstream's `addopts` enables coverage plugins, so `-o addopts=""` is used; one async test
 shells out to `python`, so a `python -> python3` shim is prepended to `PATH`. No upstream test file
