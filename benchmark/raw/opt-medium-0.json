@@ -1,0 +1,16 @@
+{
+  "cache_len": 529,
+  "corpus_sha256": "7fa86cdaae743c46e6bb4e69dee32ff8c72cc41c5e65ec3b48360aa312cf98ee",
+  "elapsed_s": 0.052284473553299904,
+  "hit_rate": 0.99471,
+  "hits": 99471,
+  "i": 0,
+  "impl": "opt",
+  "lookups": 100000,
+  "maxrss_kb": 21880,
+  "maxsize": 4096,
+  "misses": 529,
+  "python": "3.12.3",
+  "scale": "medium",
+  "warmups": 3
+}

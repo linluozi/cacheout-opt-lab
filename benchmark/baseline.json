@@ -1,0 +1,90 @@
+{
+  "command": "python3 benchmark/bench.py --impl <base|opt> --scale <small|medium|large>",
+  "corpus_sha256": "7fa86cdaae743c46e6bb4e69dee32ff8c72cc41c5e65ec3b48360aa312cf98ee",
+  "env": {
+    "cpu_model": "Model name:                              AMD EPYC 7K62 48-Core Processor",
+    "lscpu_head": [
+      "Architecture:                            x86_64",
+      "CPU op-mode(s):                          32-bit, 64-bit",
+      "Address sizes:                           48 bits physical, 48 bits virtual",
+      "Byte Order:                              Little Endian",
+      "CPU(s):                                  4",
+      "On-line CPU(s) list:                     0-3",
+      "Vendor ID:                               AuthenticAMD",
+      "Model name:                              AMD EPYC 7K62 48-Core Processor",
+      "CPU family:                              23",
+      "Model:                                   49",
+      "Thread(s) per core:                      1",
+      "Core(s) per socket:                      4"
+    ],
+    "memory_total": "MemTotal:        3812564 kB",
+    "python": "3.12.3",
+    "seed": "none: token order is deterministic from benchmark/corpus.txt"
+  },
+  "impl": "base",
+  "maxrss_kb": 28672,
+  "scales": {
+    "large": {
+      "cache_len": 529,
+      "hit_rate": 0.998942,
+      "hits": 499471,
+      "lookups": 500000,
+      "median_s": 0.4511720146983862,
+      "misses": 529,
+      "p25_s": 0.45110393688082695,
+      "p75_s": 0.45183449145406485,
+      "rel_stdev": 0.006474333610739156,
+      "samples_s": [
+        0.4511720146983862,
+        0.45110393688082695,
+        0.45183449145406485,
+        0.4562990637496114,
+        0.4471048191189766
+      ]
+    },
+    "medium": {
+      "cache_len": 529,
+      "hit_rate": 0.99471,
+      "hits": 99471,
+      "lookups": 100000,
+      "median_s": 0.09367871377617121,
+      "misses": 529,
+      "p25_s": 0.0919917318969965,
+      "p75_s": 0.0975926723331213,
+      "rel_stdev": 0.13862928373385688,
+      "samples_s": [
+        0.0975926723331213,
+        0.09367871377617121,
+        0.0919917318969965,
+        0.09036200772970915,
+        0.12762715574353933
+      ]
+    },
+    "small": {
+      "cache_len": 529,
+      "hit_rate": 0.97355,
+      "hits": 19471,
+      "lookups": 20000,
+      "median_s": 0.019070091657340527,
+      "misses": 529,
+      "p25_s": 0.019057688303291798,
+      "p75_s": 0.020969080738723278,
+      "rel_stdev": 0.06412267634485004,
+      "samples_s": [
+        0.019070091657340527,
+        0.01900948677212,
+        0.022145874798297882,
+        0.020969080738723278,
+        0.019057688303291798
+      ]
+    }
+  },
+  "upstream_commit": "b990a1d51f086b8dd39718f232076c0a6c0a6c2b",
+  "upstream_tests": {
+    "command": "cd <upstream clone> && PATH=<python-shim>:$PATH PYTHONPATH=/home/ubuntu/GitHub/work/algo/cacheout-opt-lab/src /tmp/venv-pytest/bin/python -m pytest tests -q -o addopts=''",
+    "failed": 0,
+    "note": "upstream test_cache_memoize_async_runtime_error_regression shells out to 'python'; a python->python3 shim was prepended to PATH",
+    "passed": 315,
+    "result": "315 passed in 4.14s"
+  }
+}

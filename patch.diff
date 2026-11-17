@@ -1,0 +1,36 @@
+diff --git a/src/cacheout/cache.py b/src/cacheout/cache.py
+index ecf04bd..4330ecd 100644
+--- a/src/cacheout/cache.py
++++ b/src/cacheout/cache.py
+@@ -21,6 +21,8 @@ R = t.TypeVar("R")
+ #: Possible types for TTL (time to live) value.
+ T_TTL = t.Union[int, float]
+ 
++_NO_EXPIRY = object()  # sentinel: key has no TTL bookkeeping entry
++
+ #: Possible types that can be used to filter cache keys.
+ T_FILTER = t.Union[str, t.Sequence[t.Hashable], t.Pattern[str], t.Callable[[t.Hashable], t.Any]]
+ 
+@@ -305,7 +307,7 @@ class Cache:
+         except KeyError:
+             existed = False
+         else:
+-            if self.expired(key):
++            if self._expire_times and self.expired(key):
+                 self._delete(key, RemovalCause.EXPIRED)
+                 existed = False
+             else:
+@@ -576,10 +578,10 @@ class Cache:
+         if expires_on is None:
+             expires_on = self.timer()
+ 
+-        try:
+-            return self._expire_times[key] <= expires_on
+-        except KeyError:
++        expires_at = self._expire_times.get(key, _NO_EXPIRY)
++        if expires_at is _NO_EXPIRY:
+             return key not in self._cache
++        return expires_at <= expires_on
+ 
+     def expire_times(self) -> t.Dict[t.Hashable, T_TTL]:
+         """
